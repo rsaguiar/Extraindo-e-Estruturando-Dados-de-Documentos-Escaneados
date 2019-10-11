@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Processamento-documentos-escaneados
+#Processamento-documentos-escaneados
 
 # Hands-On: Processando documentos escaneados
 
@@ -7,13 +7,13 @@ Por [Denys Farias](mailto:denys.lf@gmail.com) e [Rafael Aguiar](mailto:sextaa@gm
 
 # Objetivo
 
-1. Converter um PDF de Cart�o de Ponto em imagens;
+1. Converter um PDF de Cartão de Ponto em imagens;
 
 2. Extrair texto de imagens (OCR);
 
-3. Estruturar texto para obter batidas do cartão de ponto.
+3. Estruturar texto para obter batidas do cartÃ£o de ponto.
 
-# Acompanhando o código
+# Acompanhando o cÃ³digo
 
 # https://www.codepile.net/pile/YwMNAx5Q
 
@@ -22,30 +22,28 @@ Por [Denys Farias](mailto:denys.lf@gmail.com) e [Rafael Aguiar](mailto:sextaa@gm
 https://drive.google.com/open?id=1B0K9Ea21_XDux1eLkP4_mfh6GQDoxZ7h
 
 # Preparando o ambiente
-"""
 
 # Commented out IPython magic to ensure Python compatibility.
-# Definindo a pasta /content como atual e limpando o conteúdo dela
+# Definindo a pasta /content como atual e limpando o conteÃºdo dela
 # %cd /content
 # %rm -rf *
 # %ls
 
 
-# Instalando a biblioteca cliente do Google Cloud Vision (requer reinicialização)
+# Instalando a biblioteca cliente do Google Cloud Vision (requer reinicializaÃ§Ã£o)
 !pip install --upgrade google-cloud-vision
 
 
-# Instalando bibliotecas para manipulação de pdf
+# Instalando bibliotecas para manipulaÃ§Ã£o de pdf
 !sudo apt install poppler-utils
 !pip install pdf2image
 
 
-# Instalando bibliotecas para plotar anotações no Google Colab
+# Instalando bibliotecas para plotar anotaÃ§Ãµes no Google Colab
 !pip install mpld3
 !pip install "git+https://github.com/javadba/mpld3@display_fix"
 
-"""# 1. Converter PDF em imagens"""
-
+# 1. Converter PDF em imagens
 from google.colab import files
 from pdf2image import convert_from_path
 import os
@@ -56,7 +54,7 @@ filenames = list(uploaded_files.keys())
 pdf_filename = filenames[0]
 
 
-# Criar pasta para as imagens, se não houver
+# Criar pasta para as imagens, se nÃ£o houver
 images_folder = "/content/pdf_images"
 if not os.path.exists(images_folder):
   try:
@@ -72,29 +70,21 @@ else:
 # Converter PDF em imagens
 pdf_pages = convert_from_path(pdf_filename, dpi=200, output_folder=images_folder, fmt='png')
 
-"""# 2. Extrair texto das imagens (OCR) com o Google Cloud Vision API
-
+# 2. Extrair texto das imagens (OCR) com o Google Cloud Vision API
 # https://cloud.google.com/vision/
-
 ## Detalhando a estrutura do retorno JSON
+> *fullTextAnnotation e uma resposta hierarquica estruturada do texto extracdo da imagem. Ele e organizado como Pages (paginas) --> Blocks (blocos) --> Paragraphs (paragrafos) --> Words (palavras) --> Symbols (scmbolos):*
+	> - *Page e um conjunto de blocos, alem de metainformacoes sobre a pagina: tamanhos, resolucoes (a X e a Y podem ser diferentes) etc.*
+	> - *Block representa um elemento "logico" da pagina. Por exemplo, uma area coberta por texto, uma imagem ou um separador entre colunas. Os blocos de texto e tabela contem as principais informacoes necessarias para extrair o texto.*
+	> - *Paragraph e uma unidade estrutural de texto que representa uma sequencia ordenada de palavras. Por padrao, as palavras sao separadas por quebras.*
+	> - *Word e a menor unidade do texto. Ela e representada como um conjunto de scmbolos.*
+	> - *Symbol representa um caractere ou um sinal de pontuacao.*
 
-> *fullTextAnnotation é uma resposta hierárquica estruturada do texto extraído da imagem. Ele é organizado como Pages (páginas) → Blocks (blocos) → Paragraphs (parágrafos) → Words (palavras) → Symbols (símbolos):*
-
-> - *Page é um conjunto de blocos, além de metainformações sobre a página: tamanhos, resoluções (a X e a Y podem ser diferentes) etc.*
-
-> - *Block representa um elemento "lógico" da página. Por exemplo, uma área coberta por texto, uma imagem ou um separador entre colunas. Os blocos de texto e tabela contêm as principais informações necessárias para extrair o texto.*
-
-> - *Paragraph é uma unidade estrutural de texto que representa uma sequência ordenada de palavras. Por padrão, as palavras são separadas por quebras.*
-
-> - *Word é a menor unidade do texto. Ela é representada como um conjunto de símbolos.*
-
-> - *Symbol representa um caractere ou um sinal de pontuação.*
-
-> *fullTextAnnotation também fornece URLs para imagens da Web que correspondem em parte ou totalmente à imagem na solicitação.*
+> *fullTextAnnotation também fornece URLs para imagens da Web que correspondem em parte ou totalmente a imagem na solicitacao.*
 
 Fonte: https://cloud.google.com/vision/docs/fulltext-annotations?hl=pt-br
 
-## Como criar e gerenciar chaves de conta de serviço
+## Como criar e gerenciar chaves de conta de serviÃ§o
 
 https://cloud.google.com/iam/docs/creating-managing-service-account-keys?hl=pt-br#iam-service-account-keys-create-console
 
@@ -110,7 +100,7 @@ import os
 uploaded_credentials_filename = list(files.upload().keys())
 
 if uploaded_credentials_filename:
-  # Definir a variável de ambiente GOOGLE_APPLICATION_CREDENTIALS para o caminho do arquivo JSON 
+  # Definir a variavel de ambiente GOOGLE_APPLICATION_CREDENTIALS para o caminho do arquivo JSON 
   os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = uploaded_credentials_filename[0]
 
   print("Credentials ready!")
@@ -152,9 +142,9 @@ for text in texts:
     vertices = (['({},{})'.format(vertex.x, vertex.y)])
     print('bounds: {}'.format(','.join(vertices)))
 
-"""# 3. Estruturar texto em batidas
+# 3. Estruturar texto em batidas
 
-## Considerações sobre o Bounding Box
+## Consideracoes sobre o Bounding Box
 
 > The bounding box for the block. The vertices are in the order of top-left, top-right, bottom-right, bottom-left. When a rotation of the bounding box is detected the rotation is represented as around the top-left corner as defined when the text is read in the 'natural' orientation. For example:
 
@@ -176,15 +166,15 @@ for text in texts:
 
 Fonte: https://cloud.google.com/vision/docs/reference/rest/v1/images/annotate
 
-## Reunindo as palavras extraídas
-"""
+## Reunindo as palavras extracdas
+
 
 page = gc_response.full_text_annotation.pages[0]
 all_words = [word for block in page.blocks for paragraph in block.paragraphs for word in paragraph.words]
 
 all_words
 
-"""## Definindo funções auxiliares para plotagem"""
+## Definindo funcoes auxiliares para plotagem
 
 import mpld3
 from mpld3 import plugins
@@ -196,7 +186,7 @@ import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 
 
-# Para preparar área de plotagem
+# Para preparar area de plotagem
 def prepare_image_data(image_data):
 	im = np.array(image_data, dtype=np.uint8)
 
@@ -217,7 +207,7 @@ def prepare_image_data(image_data):
 	return ax
 
 
-# Para definir uma paleta de cores e visualizar melhor as anotações
+# Para definir uma paleta de cores e visualizar melhor as anotacoes
 def get_tab10_color_from_index(color_index):
 	COLORS_COUNT = 10
 	cmap = plt.cm.tab10
@@ -225,7 +215,7 @@ def get_tab10_color_from_index(color_index):
 	return color
 
 
-# Para plotar polígonos
+# Para plotar polcgonos
 def plot_polygon(ax, vertices, color_index, to_fill = False):
 	color = get_tab10_color_from_index(color_index)
 	points_series = [[vertex.x,vertex.y] for vertex in vertices]
@@ -247,7 +237,7 @@ plot = lambda: mpld3.display()
 def get_word_text(word):
   return ''.join([symbol.text for symbol in word.symbols])
 
-"""## Plotando palavras encontradas"""
+## Plotando palavras encontradas
 
 from PIL import Image
 
@@ -261,7 +251,7 @@ for	item_index, word in enumerate(all_words):
 
 plot()
 
-"""## Definido código auxiliar para agrupar as palavras por linhas"""
+## Definido cÃ³digo auxiliar para agrupar as palavras por linhas
 
 import statistics
 import itertools
@@ -277,14 +267,14 @@ def get_height(word):
   return (left_height + right_height) // 2
 
 
-# Para decidir se palavra é "estável", ou seja, possui menos variações no bounding box.
+# Para decidir se palavra e "estavel", ou seja, possui menos variacoes no bounding box.
 min_stable_word_len = 3
 
 def is_stable(word):
   return len(get_word_text(word)) >= min_stable_word_len
 
 
-# Para estimar referência de altura de palavras
+# Para estimar referÃªncia de altura de palavras
 sample_size_for_height_reference_words = 5
 
 def get_word_reference_height(words):
@@ -303,15 +293,15 @@ def get_word_reference_height(words):
 word_reference_height = get_word_reference_height(ordered_words)
 
 
-# Para estimar variação vertical entre palavras
+# Para estimar variaÃ§Ã£o vertical entre palavras
 def get_accepted_y_variation(word_reference_height):
   return (word_reference_height + 2) // 3
 
 accepted_y_variation = get_accepted_y_variation(word_reference_height)
 
-"""## Agrupando palavras filtradas em linhas"""
+## Agrupando palavras filtradas em linhas
 
-# Ignorando palavras muito pequenas, que tendem a ser ruído
+# Ignorando palavras muito pequenas, que tendem a ser rucdo
 no_small_ordered_words = [word for word in ordered_words if get_height(word) >= word_reference_height / 2]
 
 lines = {}
@@ -346,7 +336,7 @@ for word in no_small_ordered_words:
 # Exibindo texto das linhas
 lines
 
-"""### Plotando as linhas"""
+### Plotando as linhas
 
 ax = prepare_image_data(image_data)
 for	item_index, words in lines.items():
@@ -357,14 +347,14 @@ for	item_index, words in lines.items():
 
 plot()
 
-"""## Preparando código para auxiliar na identificação de linhas com datas de batidas"""
+## Preparando cÃ³digo para auxiliar na identificaÃ§Ã£o de linhas com datas de batidas
 
 import re
 import datetime
 
 
 # Para limpar caracteres iniciais indesejados
-TOKENS_TO_STRIP = ['.', '-', '_', ':', '*', '\'', '"', '`', '´', '|', '~', '^', 'º', 'ª', '<', '>', '°', ';', '¨']
+TOKENS_TO_STRIP = ['.', '-', '_', ':', '*', '\'', '"', '`', 'Â´', '|', '~', '^', 'Âº', 'Âª', '<', '>', 'Â°', ';', 'Â¨']
 
 def ltrip_words(words, tokens_to_strip = TOKENS_TO_STRIP):
   result = list(words)
@@ -385,7 +375,7 @@ def ltrip_words(words, tokens_to_strip = TOKENS_TO_STRIP):
   return result
 
 
-# Para estimar vértices do bounding box de um conjunto de símbolos
+# Para estimar vertices do bounding box de um conjunto de scmbolos
 def estimate_word_vertices(symbols):
 	if not symbols:
 		raise ValueError('Could not estimate from empty symbols.')
@@ -424,7 +414,7 @@ def extract_date(line_words):
     
   return extracted_date, leading_text
 
-"""## Filtrando linhas iniciando com datas"""
+## Filtrando linhas iniciando com datas
 
 lines_by_dates = []
 
@@ -447,7 +437,7 @@ for _, line_words in lines.items():
 
 lines_by_dates
 
-"""### Plotando as linhas com datas iniciais"""
+### Plotando as linhas com datas iniciais
 
 ax = prepare_image_data(image_data)
 for	item_index, line_by_date in enumerate(lines_by_dates):
@@ -460,7 +450,7 @@ for	item_index, line_by_date in enumerate(lines_by_dates):
 
 plot()
 
-"""## Preparando código para a identificar o que é data da batida, o que é horário da batida e o que é observação"""
+## Preparando cÃ³digo para a identificar o que e data da batida, o que e horario da batida e o que e observaÃ§Ã£o
 
 # Para limpar caracters finais indesejados
 def rtrip_words(words, tokens_to_strip = TOKENS_TO_STRIP):
@@ -481,7 +471,7 @@ def rtrip_words(words, tokens_to_strip = TOKENS_TO_STRIP):
       
   return result
 
-"""## Limpando e indexando palavras das linhas iniciadas com datas"""
+## Limpando e indexando palavras das linhas iniciadas com datas
 
 from sklearn.cluster import KMeans
 
@@ -508,7 +498,7 @@ samples = [[word.bounding_box.vertices[0].x,1] for word in words_to_group]
 labels = KMeans(n_clusters= k_groups_count, random_state= k_means_random_state).fit_predict(samples)
 
 
-# Identificando os labels do grupo das observações
+# Identificando os labels do grupo das observacoes
 positions = [sample[0] for sample in samples]
 max_position = max(positions)
 max_position_index = positions.index(max_position)
@@ -521,14 +511,14 @@ min_position_index = positions.index(min_position)
 leading_date_labels = [labels[min_position_index]]
 
 
-# Identificando os índices dos grupos da data inicial e das batidas
+# Identificando os cndices dos grupos da data inicial e das batidas
 time_records_indexes = [None if label in observation_labels or label in leading_date_labels else words_to_group_indexes[index] for index, label in enumerate(labels)]
 time_records_indexes = list(filter(lambda index: index, time_records_indexes))
 
 leading_date_indexes = [None if label not in leading_date_labels else words_to_group_indexes[index] for index, label in enumerate(labels)]
 leading_date_indexes = list(filter(lambda index: index, leading_date_indexes))
 
-"""## Filtrando as batidas e associando às datas iniciais"""
+## Filtrando as batidas e associando Ã s datas iniciais
 
 import re
 import statistics
@@ -580,7 +570,7 @@ for line_by_date in lines_by_dates:
 
 lines_by_dates
 
-"""### Plotando as batidas"""
+### Plotando as batidas
 
 ax = prepare_image_data(image_data)
 for	item_index, line_by_date in enumerate(lines_by_dates):

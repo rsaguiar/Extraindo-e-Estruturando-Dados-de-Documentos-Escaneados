@@ -8,3 +8,6 @@ O arquivo Processamento_documentos_escaneados.ipynb pode ser importado no Googl 
 
 O Google Colab ou “Colaboratório” é um serviço de nuvem gratuito hospedado pelo Google para incentivar a pesquisa de Aprendizado de Máquina e Inteligência Artificial. Maiores informações: https://medium.com/machina-sapiens/google-colab-guia-do-iniciante-334d70aad531
 
+Exemplo da Implementação
+https://colab.research.google.com/drive/1gONqlvsPpwksTcLNiUPyuQgUdIbaPQQT
+
